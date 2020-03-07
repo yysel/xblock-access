@@ -1,0 +1,17 @@
+{
+    "name": "xblock/access",
+    "description": "lumen,admin,laravel,laravel-admin,xblock-ext",
+    "type": "libary",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jim",
+            "email": "927994432@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "XBlock\\Access\\":"src/"
+        }
+    }
+}
