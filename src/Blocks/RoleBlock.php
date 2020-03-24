@@ -12,7 +12,7 @@ namespace XBlock\Access\Blocks;
 use Illuminate\Http\Request;
 use XBlock\Access\Dict;
 use XBlock\Access\Permission;
-use XBlock\Access\Role;
+use XBlock\Access\Models\Role;
 use XBlock\Kernel\Blocks\ModelBlock;
 use XBlock\Kernel\Elements\Field;
 use XBlock\Kernel\Elements\Button;

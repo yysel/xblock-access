@@ -6,13 +6,14 @@
  * Time: 下午4:24
  */
 
-namespace XBlock\Access;
+namespace XBlock\Access\Models;
 
 
-use XBlock\Kernel\Models\Role as KernelRole;
+use Illuminate\Database\Eloquent\Model;
 
-class Role extends KernelRole
+class Role extends Model
 {
+    protected $table = 'access_roles';
     protected $appends = ['children'];
     protected $permission_object = [];
     protected $permission_array = [];
