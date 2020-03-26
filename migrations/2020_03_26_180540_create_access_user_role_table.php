@@ -14,7 +14,7 @@ class CreateAccessUserRoleTable extends Migration {
 	{
 		Schema::create('access_user_role', function(Blueprint $table)
 		{
-			$table->integer('id', true)->primary();
+			$table->increments('id');
 			$table->integer('user_id')->nullable();
 			$table->integer('role_id')->nullable();
 		});

@@ -29,4 +29,12 @@ class Service
     {
         return config('xblock.access.user_role', 'access_user_role');
     }
+
+    static public function loadMigrartion()
+    {
+        app()->afterResolving('migrator', function ($migrator) {
+            $migrator->path(__DIR__ . '/../migrations');
+        });
+    }
+
 }

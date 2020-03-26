@@ -14,7 +14,7 @@ class CreateAccessRolesTable extends Migration
     public function up()
     {
         Schema::create('access_roles', function (Blueprint $table) {
-            $table->increments('id')->primary();
+            $table->increments('id');
             $table->timestamps();
             $table->softDeletes();
             $table->string('title');
