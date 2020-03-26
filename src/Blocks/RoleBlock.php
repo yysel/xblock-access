@@ -12,7 +12,7 @@ namespace XBlock\Access\Blocks;
 use Illuminate\Http\Request;
 use XBlock\Access\Dict;
 use XBlock\Access\Permission;
-use XBlock\Access\Models\Role;
+use XBlock\Access\Service;
 use XBlock\Kernel\Blocks\ModelBlock;
 use XBlock\Kernel\Elements\Field;
 use XBlock\Kernel\Elements\Button;
@@ -21,7 +21,11 @@ use XBlock\Kernel\Elements\Component;
 class RoleBlock extends ModelBlock
 {
     public $title = '角色管理';
-    public $origin = Role::class;
+
+    public function boot()
+    {
+        $this->origin = Service::getRoleModel();
+    }
 
     public function component()
     {
@@ -31,12 +35,12 @@ class RoleBlock extends ModelBlock
     public function header()
     {
         return [
-            Field::uuid(),
+            Field::key(),
             Field::text('title', '角色名称')->writable(true),
             Field::textArea('description', '详细描述')->writable(),
             Field::text('children', '子项')->invisible(),
-            Field::radio('parent_uuid', '父级')->invisible()->writable()->dict(Dict::role()),
-            Field::text('permission', '权限设置')->invisible()->writable()->parent('parent_uuid'),
+            Field::radio('parent_id', '父级')->invisible()->writable()->dict(Dict::role()),
+            Field::text('permission', '权限设置')->invisible()->writable()->parent('parent_id'),
         ];
     }
 
