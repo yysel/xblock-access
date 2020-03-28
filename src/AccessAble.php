@@ -28,6 +28,6 @@ trait AccessAble
         if ($this->access_permission_array) return $this->access_permission_array;
         $roles = $this->role;
         $role_model = Service::getRoleModel(true);
-        return $this->access_permission_array = $role_model->whereIn('uuid', $roles)->pluck('permission')->flatten()->unique()->values()->toArray();
+        return $this->access_permission_array = $role_model->whereIn('id', $roles)->pluck('permission')->flatten()->unique()->values()->toArray();
     }
 }
