@@ -55,8 +55,8 @@ class RoleBlock extends ModelBlock
 
     public function where($query)
     {
-        return $query->whereNull('parent_uuid')->when(!user('is_admin'), function ($q) {
-            $q->whereIn('uuid', user('role'));
+        return $query->whereNull('parent_id')->when(!user('is_admin'), function ($q) {
+            $q->whereIn('id', user('role'));
         });
     }
 

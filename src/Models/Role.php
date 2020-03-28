@@ -20,18 +20,18 @@ class Role extends Model
 
     public function child()
     {
-        return $this->hasMany(static::class, 'parent_uuid', 'uuid');
+        return $this->hasMany(static::class, 'parent_id', 'id');
     }
 
     public function parent()
     {
-        return $this->belongsTo(static::class, 'parent_uuid', 'uuid');
+        return $this->belongsTo(static::class, 'parent_id', 'id');
     }
 
     public function getChildrenAttribute()
     {
         $child = $this->child()->when(!user('is_admin'), function ($q) {
-            $q->whereIn('uuid', user('role'));
+            $q->whereIn('id', user('role'));
         })->get();
         return $child->count() ? $child : null;
     }
