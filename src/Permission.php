@@ -8,6 +8,7 @@
 
 namespace XBlock\Access;
 
+use XBlock\Access\Models\Role;
 use XBlock\Kernel\Blocks\Block;
 use XBlock\Kernel\Elements\Menu;
 use XBlock\Kernel\Elements\Permission as KernelPermission;
@@ -37,7 +38,7 @@ class Permission
             }
         });
         $this->permission = collect($this->permission);
-        $role = Role::where('uuid', $uuid)->first();
+        $role = Role::where('id', $uuid)->first();
         if ($role) {
             $permission = $role->permission();
             $this->permission = collect($this->permission)->filter(function ($item) use ($permission) {
@@ -69,7 +70,7 @@ class Permission
                 $class = $this->block_list[$index];
                 $block = ($class && class_exists($class)) ? (new $class()) : null;
                 if ($block instanceof Block) {
-                    $key = $path . "-{$index}";
+                    $key = $path . "@{$index}";
                     $this->permission[$key] = [
                         'text' => $block->title,
                         'value' => $key,
@@ -84,14 +85,14 @@ class Permission
 
     protected function actionPermission(Block $block, $path)
     {
-        $this->permission[$path . '-list'] = [
+        $this->permission[$path . '@list'] = [
             'text' => '查看',
-            'value' => $path . '-list',
+            'value' => $path . '@list',
             'type' => 'action',
             'parent' => $path
         ];
         $block->getActionWithPermission()->map(function ($item) use (&$permission_list, $path) {
-            $key = $path . "-{$item->index}";
+            $key = $path . "@{$item->index}";
             $this->permission[$key] = [
                 'text' => $item->title,
                 'value' => $key,
@@ -105,7 +106,7 @@ class Permission
                 return $item->index == 'delete';
             });
             if (!$hasDelete && ($item->index == 'restore' || $item->index == 'force_delete')) return;
-            $key = $path . "-{$item->index}";
+            $key = $path . "@{$item->index}";
             $this->permission[$key] = [
                 'text' => $item->title,
                 'value' => $key,

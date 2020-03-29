@@ -18,6 +18,10 @@ class Role extends Model
     protected $permission_object = [];
     protected $permission_array = [];
 
+    protected $casts = [
+        'parent_id' => 'int'
+    ];
+
     public function child()
     {
         return $this->hasMany(static::class, 'parent_id', 'id');

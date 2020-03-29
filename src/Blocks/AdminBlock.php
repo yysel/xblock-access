@@ -9,6 +9,7 @@
 namespace XBlock\Access\Blocks;
 
 
+use XBlock\Access\AccessField;
 use XBlock\Access\Dict;
 use XBlock\Kernel\Blocks\ModelBlock;
 use XBlock\Kernel\Elements\Button;
@@ -32,14 +33,14 @@ class AdminBlock extends ModelBlock
             Field::text('name', '姓名')->writable()->require()->filterable(),
             Field::text('username', '用户名')->addable()->require()->filterable(),
             Field::text('phone', '手机号')->writable()->filterable(),
-            $this->getRoleFiled(),
+            AccessField::roleMultiSelect('role', '角色')->writable()->dict(Dict::role()),
             Field::text('status')->invisible(),
         ];
     }
 
     protected function getRoleFiled()
     {
-        return Field::cascadeCheckboxAllNode('role', '角色')->writable()->dict(Dict::role());
+        return AccessField::roleMultiSelect('role', '角色')->writable()->dict(Dict::role());
     }
 
     public function button()
