@@ -70,14 +70,13 @@ class Permission
                 $class = $this->block_list[$index];
                 $block = ($class && class_exists($class)) ? (new $class()) : null;
                 if ($block instanceof Block) {
-                    $key = $path . "@{$index}";
-                    $this->permission[$key] = [
+                    $this->permission[$index] = [
                         'text' => $block->title,
-                        'value' => $key,
+                        'value' => $index,
                         'type' => 'block',
                         'parent' => $path,
                     ];
-                    $this->actionPermission($block, $key);
+                    $this->actionPermission($block, $index);
                 }
             }
         }

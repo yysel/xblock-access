@@ -11,6 +11,8 @@ namespace XBlock\Access;
 
 trait AccessAble
 {
+    protected $access_role_array = [];
+    protected $access_permission_array = [];
 
     public function roles()
     {
@@ -30,4 +32,5 @@ trait AccessAble
         $role_model = Service::getRoleModel(true);
         return $this->access_permission_array = $role_model->whereIn('id', $roles)->pluck('permission')->flatten()->unique()->values()->toArray();
     }
+
 }

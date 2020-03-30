@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     protected $table = 'access_roles';
-    protected $appends = ['children'];
     protected $permission_object = [];
     protected $permission_array = [];
 
@@ -32,7 +31,7 @@ class Role extends Model
     public function getChildrenAttribute()
     {
         $child = $this->child()->when(!user('is_admin'), function ($q) {
-            $q->whereIn('id', user('role'));
+            $q->whereIn('id', user('role', []));
         })->get();
         return $child->count() ? $child : null;
     }
@@ -40,7 +39,7 @@ class Role extends Model
     public function getPermissionAttribute()
     {
         if ($this->permission_object) return $this->permission_object;
-        return $this->permission_object = $this->attributes['permission'] ? json_decode($this->attributes['permission']) : [];
+        return $this->permission_object = $this->attributes['permission'] ? json_decode($this->attributes['permission'], true) : [];
     }
 
     public function permission()
