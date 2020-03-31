@@ -42,7 +42,7 @@ class Permission
         if ($role) {
             $permission = $role->permission();
             $this->permission = collect($this->permission)->filter(function ($item) use ($permission) {
-                return in_array($item['value'], $permission)|| $item['type'] == 'block';
+                return in_array($item['value'], $permission) || $item['type'] == 'block';
             });
         } elseif (!user('is_admin')) {
             $permission = user('permission', []);
@@ -84,12 +84,14 @@ class Permission
 
     protected function actionPermission(Block $block, $path)
     {
-        $this->permission[$path . '@list'] = [
-            'text' => '查看',
-            'value' => $path . '@list',
-            'type' => 'action',
-            'parent' => $path
-        ];
+        if ($block->auth) {
+            $this->permission[$path . '@list'] = [
+                'text' => '查看',
+                'value' => $path . '@list',
+                'type' => 'action',
+                'parent' => $path
+            ];
+        }
         $block->getActionWithPermission()->map(function ($item) use (&$permission_list, $path) {
             $key = $path . "@{$item->index}";
             $this->permission[$key] = [
