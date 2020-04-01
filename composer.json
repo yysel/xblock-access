@@ -3,6 +3,10 @@
     "description": "lumen,admin,laravel,laravel-admin,xblock-ext",
     "type": "libary",
     "license": "MIT",
+    "require": {
+        "php": "^7.2",
+        "xblock/kernel":"*"
+    },
     "authors": [
         {
             "name": "Jim",

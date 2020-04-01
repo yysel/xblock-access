@@ -12,6 +12,7 @@ namespace XBlock\Access\Blocks;
 use XBlock\Access\AccessField;
 use XBlock\Access\Dict;
 use XBlock\Kernel\Blocks\ModelBlock;
+use XBlock\Kernel\Elements\ActionCreator;
 use XBlock\Kernel\Elements\Button;
 use XBlock\Kernel\Elements\Component;
 
@@ -30,18 +31,16 @@ class AdminBlock extends ModelBlock
         return Component::table()->border();
     }
 
+    public function actions(ActionCreator $creator)
+    {
+        $creator->add();
+        $creator->edit('solid_icon');
+        $creator->delete('solid_icon');
+    }
+
     protected function getRoleFiled()
     {
         return AccessField::roleMultiSelect('role', '角色')->writable()->dict(Dict::role());
-    }
-
-    public function button()
-    {
-        return [
-            Button::add(),
-            Button::edit('solid_icon'),
-            Button::delete('solid_icon'),
-        ];
     }
 
     public function beforeEdit($model)

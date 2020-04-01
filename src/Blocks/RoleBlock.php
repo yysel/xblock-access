@@ -10,14 +10,15 @@ namespace XBlock\Access\Blocks;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use XBlock\Access\AccessField;
 use XBlock\Access\Dict;
-use XBlock\Access\Permission;
 use XBlock\Access\Service;
 use XBlock\Kernel\Blocks\ModelBlock;
-use XBlock\Kernel\Elements\Field;
-use XBlock\Kernel\Elements\Button;
+use XBlock\Kernel\Elements\ActionCreator;
 use XBlock\Kernel\Elements\Component;
+use XBlock\Kernel\Elements\FieldCreator;
+use XBlock\Kernel\Services\PermissionService;
 
 class RoleBlock extends ModelBlock
 {
@@ -35,25 +36,21 @@ class RoleBlock extends ModelBlock
         return Component::table()->border();
     }
 
-    public function header()
+    public function fields(FieldCreator $creator)
     {
-        return [
-            Field::key(),
-            Field::text('title', '角色名称')->writable(true),
-            Field::textArea('description', '详细描述')->writable(),
-            Field::text('children', '子项')->invisible(),
-            AccessField::roleSelect( 'parent_id', '父级')->invisible()->writable()->dict(Dict::role()),
-            AccessField::permissionSelect( 'permission', '权限设置')->invisible()->writable()->parent('parent_id'),
-        ];
+        $creator->key();
+        $creator->text('title', '角色名称')->writable(true);
+        $creator->textArea('description', '详细描述')->writable();
+        $creator->text('children', '子项')->invisible();
+        $creator->create(AccessField::roleSelect('parent_id', '父级')->invisible()->writable()->dict(Dict::role()));
+        $creator->create(AccessField::permissionSelect('permission', '权限设置')->invisible()->writable()->parent('parent_id'));
     }
 
-    public function button()
+    public function actions(ActionCreator $creator)
     {
-        return [
-            Button::add(),
-            Button::edit('solid_icon'),
-            Button::delete('solid_icon'),
-        ];
+        $creator->add();
+        $creator->edit('solid_icon');
+        $creator->delete('solid_icon');
     }
 
     public function beforeAdd($model)
@@ -75,7 +72,21 @@ class RoleBlock extends ModelBlock
 
     public function permissionTree(Request $request)
     {
-        $data = (new Permission())->getTree($request->id);
+        $data = (new PermissionService())->getPermissionTree(function (Collection $lists) use ($request) {
+            $role = Service::getRoleModel(true)->where('id', $request->id)->first();
+            if ($role) {
+                $permission = $role->permission();
+                return $lists->filter(function ($item) use ($permission) {
+                    return in_array($item['value'], $permission) || $item['type'] == 'block';
+                });
+            } elseif (!user('is_admin')) {
+                $permission = user('permission', []);
+                return $lists->filter(function ($item) use ($permission) {
+                    return in_array($item['value'], $permission) || $item['type'] == 'block';
+                });
+            }
+            return $lists;
+        });
         return message(true)->data($data);
     }
 }
