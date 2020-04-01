@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "xblock/kernel":"*"
+        "xblock/kernel":"~1.0.0"
     },
     "authors": [
         {
