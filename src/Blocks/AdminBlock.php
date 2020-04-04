@@ -13,7 +13,6 @@ use XBlock\Access\AccessField;
 use XBlock\Access\Dict;
 use XBlock\Kernel\Blocks\ModelBlock;
 use XBlock\Kernel\Elements\ActionCreator;
-use XBlock\Kernel\Elements\Button;
 use XBlock\Kernel\Elements\Component;
 
 class AdminBlock extends ModelBlock

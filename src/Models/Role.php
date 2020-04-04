@@ -11,6 +11,16 @@ namespace XBlock\Access\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
+/**
+ * Class Role
+ * @property $id
+ * @property $title
+ * @property $parent_id
+ * @property $permission
+ * @property $description
+ * @package XBlock\Access\Models
+ */
 class Role extends Model
 {
     protected $table = 'access_roles';
